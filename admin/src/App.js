@@ -1,8 +1,12 @@
+import Login from "./pages/Login";
+import AuthState from './contexts/AuthState'
+
+
 function App() {
   return (
-    <div className="App">
-      
-    </div>
+    <AuthState>
+      <Login/>
+    </AuthState>
   );
 }
 

@@ -28,10 +28,10 @@ const registerOwner = async (req, res) => {
             isAdmin:true
           });
   
-          const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-            expiresIn: "1h",
-          });
-          res.cookie("token", token);
+          // const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+          //   expiresIn: "1h",
+          // });
+          // res.cookie("token", token);
   
           res.status(201).send("User registered successfully");
         });
@@ -68,7 +68,7 @@ const logInOwner = async (req, res) => {
       });
       res.cookie("token", token);
 
-      res.status(200).send("Login successful");
+      res.status(200).json({token,message:"User Logged!"});
     });
   } catch (error) {
     console.error("Error logging in user:", error);

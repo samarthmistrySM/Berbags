@@ -1,6 +1,7 @@
 const express = require('express');
 const cookieParser = require("cookie-parser")
 const morgan = require('morgan');
+const cors = require('cors');
 
 const authRouter = require("../backend/routes/authRouter")
 const ownerRouter = require("../backend/routes/ownerRouter")
@@ -11,6 +12,7 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 4000;
 
+app.use(cors())
 app.use(morgan('tiny'))
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
