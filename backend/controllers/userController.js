@@ -36,11 +36,10 @@ const updateUser = async (req, res) => {
   const { fullname, email, contact, isAdmin, userId } = req.body;
   try {
     const user = await userModel.findById(userId);
-
     if (!user) {
       res.status(400).send("User not found!");
     }
-    user.updateOne({
+    await user.updateOne({
       fullname,
       email,
       contact,

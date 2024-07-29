@@ -6,17 +6,19 @@ import {
   tablePaginationClasses as classes,
 } from "@mui/base/TablePagination";
 import Cookies from "js-cookie";
-import AddUserForm from "../components/AddUserForm"; 
-import { MdDelete } from "react-icons/md";
+import UpdateUserForm from "../components/updateUser"; 
+import AddUserForm from "../components/AddUserForm"
+import { MdDelete, MdEdit } from "react-icons/md";
 import toast from "react-hot-toast";
 
 export default function Users() {
   const [users, setUsers] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [showForm, setShowForm] = useState(false);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [showUpdateForm, setShowUpdateForm] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
   const API_URL = process.env.REACT_APP_API_URL;
-
 
   const fetchUsers = async () => {
     try {
@@ -49,11 +51,18 @@ export default function Users() {
   };
 
   const handleAddUserClick = () => {
-    setShowForm(true);
+    setShowAddForm(true);
   };
 
-  const handleUserAdded = () => {
+  const handleUpdateUserClick = (user) => {
+    setSelectedUser(user);
+    setShowUpdateForm(true);
+  };
+
+  const handleUserAddedOrUpdated = () => {
     fetchUsers();
+    setShowAddForm(false);
+    setShowUpdateForm(false);
   };
 
   const handleDeleteUser = async (userId) => {
@@ -65,15 +74,12 @@ export default function Users() {
         },
       });
       toast.success("User deleted successfully!");
-  
-
     } catch (error) {
       console.error("Error deleting user:", error);
       toast.error("Failed to delete user.");
     }
     fetchUsers();
   };
-  
 
   const grey = {
     50: "#F3F6F9",
@@ -155,7 +161,7 @@ export default function Users() {
               <th>Email</th>
               <th>Contact</th>
               <th>Is Admin</th>
-              <th>Delete User</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -168,12 +174,17 @@ export default function Users() {
                 <td>{user.email}</td>
                 <td>{user.contact}</td>
                 <td>{user.isAdmin ? "Yes" : "No"}</td>
-                <td className="flex justify-center"><button className="border-none py-1 text-lg" onClick={()=>{handleDeleteUser(user._id)}} ><MdDelete/></button></td>
+                <td className="flex justify-center">
+                  <button className="border-none py-1 text-lg" onClick={() => handleUpdateUserClick(user)}><MdEdit /></button>
+                </td>
+                <td className="flex justify-center">
+                  <button className="border-none py-1 text-lg" onClick={() => handleDeleteUser(user._id)}><MdDelete /></button>
+                </td>
               </tr>
             ))}
             {emptyRows > 0 && (
               <tr style={{ height: 41 * emptyRows }}>
-                <td colSpan={4} aria-hidden />
+                <td colSpan={6} aria-hidden />
               </tr>
             )}
           </tbody>
@@ -181,7 +192,7 @@ export default function Users() {
             <tr>
               <CustomTablePagination
                 rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-                colSpan={5}
+                colSpan={6}
                 count={users.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
@@ -204,8 +215,11 @@ export default function Users() {
       <button className="text-sm mt-5" onClick={handleAddUserClick}>
         + Add User
       </button>
-      {showForm && (
-        <AddUserForm onClose={() => setShowForm(false)} onUserAdded={handleUserAdded} />
+      {showAddForm && (
+        <AddUserForm onClose={() => setShowAddForm(false)} onUserAdded={handleUserAddedOrUpdated} />
+      )}
+      {showUpdateForm && selectedUser && (
+        <UpdateUserForm onClose={() => setShowUpdateForm(false)} onUserUpdated={handleUserAddedOrUpdated} user={selectedUser} />
       )}
     </div>
   );

@@ -7,12 +7,17 @@ import {
 } from "@mui/base/TablePagination";
 import Cookies from "js-cookie";
 import AddProductForm from "../components/AddProductForm"; 
+import UpdateProductForm from "../components/UpdateProductForm";
+import { MdEdit } from "react-icons/md";
+import toast from "react-hot-toast";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [showForm, setShowForm] = useState(false);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [showUpdateForm, setShowUpdateForm] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
@@ -47,10 +52,15 @@ export default function Products() {
   };
 
   const handleAddProductClick = () => {
-    setShowForm(true);
+    setShowAddForm(true);
   };
 
-  const handleProductAdded = () => {
+  const handleUpdateProductClick = (product) => {
+    setSelectedProduct(product);
+    setShowUpdateForm(true);
+  };
+
+  const handleProductAddedOrUpdated = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(`${API_URL}/products`, {
@@ -66,6 +76,8 @@ export default function Products() {
     };
 
     fetchProducts();
+    setShowAddForm(false);
+    setShowUpdateForm(false);
   };
 
   const grey = {
@@ -150,6 +162,7 @@ export default function Products() {
               <th>Category</th>
               <th>Discount</th>
               <th>Sold Out</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -164,11 +177,18 @@ export default function Products() {
                 <td>{product.category}</td>
                 <td>{product.discount ?? "No discount"}</td>
                 <td>{product.isSoldOut ? "Yes" : "No"}</td>
+                <td> 
+                  <div className="flex justify-center">
+                  <button className="text-lg" onClick={() => handleUpdateProductClick(product)}>
+                    <MdEdit />
+                  </button>
+                  </div>
+                </td>
               </tr>
             ))}
             {emptyRows > 0 && (
               <tr style={{ height: 41 * emptyRows }}>
-                <td colSpan={6} aria-hidden />
+                <td colSpan={7} aria-hidden />
               </tr>
             )}
           </tbody>
@@ -176,7 +196,7 @@ export default function Products() {
             <tr>
               <CustomTablePagination
                 rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-                colSpan={6}
+                colSpan={7}
                 count={products.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
@@ -199,8 +219,11 @@ export default function Products() {
       <button className="text-sm mt-5" onClick={handleAddProductClick}>
         + Add Product
       </button>
-      {showForm && (
-        <AddProductForm onClose={() => setShowForm(false)} onProductAdded={handleProductAdded} />
+      {showAddForm && (
+        <AddProductForm onClose={() => setShowAddForm(false)} onProductAdded={handleProductAddedOrUpdated} />
+      )}
+      {showUpdateForm && selectedProduct && (
+        <UpdateProductForm onClose={() => setShowUpdateForm(false)} onProductUpdated={handleProductAddedOrUpdated} product={selectedProduct} />
       )}
     </div>
   );
