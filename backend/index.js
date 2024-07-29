@@ -3,8 +3,10 @@ const cookieParser = require("cookie-parser")
 const morgan = require('morgan');
 const cors = require('cors');
 
-const authRouter = require("../backend/routes/authRouter")
-const ownerRouter = require("../backend/routes/ownerRouter")
+const authRouter = require("./routes/authRouter")
+const ownerRouter = require("./routes/ownerRouter")
+const userRouter = require('./routes/userRouter')
+
 const connectDb = require("./config/connectDB")
 
 require('dotenv').config();
@@ -24,6 +26,8 @@ app.get('/',(req,res)=>{
 
 app.use('/api/auth',authRouter);
 app.use('/api/owner',ownerRouter);
+app.use('/api/user',userRouter);
+
 
 const startServer = async() =>{
     try {
