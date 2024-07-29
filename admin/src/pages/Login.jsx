@@ -12,7 +12,7 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const email = emailRef.current.value.toLowerCase();
+    const email = emailRef.current.value;
     const password = passwordRef.current.value;
 
     try {
