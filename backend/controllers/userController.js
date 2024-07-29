@@ -18,4 +18,19 @@ const getUser = async (req, res) => {
     }
 };
 
-module.exports = {getUser};
+const getAllUsers = async(req,res)=>{
+    try {
+        const users = await userModel.find();
+
+        if(!users){
+            res.status(400).send("Error getting users");
+        }
+
+        res.send(users);
+    } catch (error) {
+        console.error("Error finding users:", error);
+        res.status(500).send({ error: "Server error" });
+    }
+}
+
+module.exports = {getUser, getAllUsers};

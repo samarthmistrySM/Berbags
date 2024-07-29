@@ -22,7 +22,7 @@ const registerUser = async (req, res) => {
 
         const user = await userModel.create({
           fullname,
-          email,
+          email:email.toLowerCase(),
           password: hash,
           contact,
           isAdmin:false
@@ -46,7 +46,7 @@ const logInUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await userModel.findOne({ email });
+    const user = await userModel.findOne({ email:email.toLowerCase() });
 
     if (!user) {
       return res.status(400).send("User not found, Please register first");

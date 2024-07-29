@@ -1,6 +1,6 @@
 import React, { useRef, useContext } from "react";
 import axios from "axios";
-import { Toaster, toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import Cookies from "js-cookie";
 import AuthContext from "../contexts/AuthContext";
 
@@ -33,7 +33,7 @@ export default function Login() {
 
   return (
     <div className="w-screen h-screen overflow-hidden flex flex-col justify-between">
-      <Toaster />
+      
       <div className="w-full h-full flex flex-col justify-center items-center px-4 lg:px-32 sm:px-6">
         <h1 className="pt-sans text-xl font-bold">
           Berbags. <span className="text-2xl font-normal">|</span> Admin
@@ -47,7 +47,7 @@ export default function Login() {
               Email
             </label>
             <input
-              className="w-full border-[1px] focus:outline-none rounded-md text-sm py-1 px-3"
+              className="w-full border focus:outline-none rounded-md text-sm py-1 px-3"
               type="email"
               name="email"
               id="email"
@@ -60,7 +60,7 @@ export default function Login() {
               Password
             </label>
             <input
-              className="w-full border-[1px] focus:outline-none rounded-md text-sm py-1 px-3"
+              className="w-full border focus:outline-none rounded-md text-sm py-1 px-3"
               type="password"
               name="password"
               id="password"

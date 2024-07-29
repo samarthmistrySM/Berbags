@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {  FaUser, FaShoppingBag, FaBars, FaShoppingCart } from 'react-icons/fa';
 import { MdDashboard } from "react-icons/md";
-
+import { BiSolidLogOut } from "react-icons/bi";
 import { NavLink } from 'react-router-dom';
+import AuthContext from '../contexts/AuthContext';
 
 const Sidebar = () => {
+  const { handleLogout } = useContext(AuthContext);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleSidebar = () => {
@@ -55,6 +57,15 @@ const Sidebar = () => {
             <FaShoppingCart className="text-gray-600" />
             <span className={`text-gray-600 ml-4 ${isCollapsed ? 'hidden' : 'inline'}`}>Orders</span>
           </NavLink>
+        </li>
+        <li className="hover:bg-gray-100">
+          <span 
+            className="flex justify-start items-center p-4 w-full" 
+            onClick={handleLogout}
+          >
+            <BiSolidLogOut className="text-gray-600" />
+            <span className={`text-gray-600 ml-4 ${isCollapsed ? 'hidden' : 'inline'}`}>Logout</span>
+          </span>
         </li>
       </ul>
     </div>

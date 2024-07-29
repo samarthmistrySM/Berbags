@@ -6,6 +6,7 @@ const cors = require('cors');
 const authRouter = require("./routes/authRouter")
 const ownerRouter = require("./routes/ownerRouter")
 const userRouter = require('./routes/userRouter')
+const productRouter = require('./routes/productRouter')
 
 const connectDb = require("./config/connectDB")
 
@@ -14,11 +15,18 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-app.use(cors())
+const corsOptions = {
+    origin: (origin, callback) => {
+      callback(null, true);
+    },
+    credentials: true, 
+  };
+
+app.use(cors(corsOptions))
+app.use(cookieParser())
 app.use(morgan('tiny'))
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
-app.use(cookieParser())
 
 app.get('/',(req,res)=>{
     res.send("server is running")
@@ -26,7 +34,8 @@ app.get('/',(req,res)=>{
 
 app.use('/api/auth',authRouter);
 app.use('/api/owner',ownerRouter);
-app.use('/api/user',userRouter);
+app.use('/api/users',userRouter);
+app.use('/api/products',productRouter);
 
 
 const startServer = async() =>{

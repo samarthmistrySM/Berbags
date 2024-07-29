@@ -17,8 +17,9 @@ const AuthState = (props) => {
 
         if (token && token !== "") {
           const userId = jwtDecode(token).userId;
-          const response = await axios.get(`${API_URL}/user/${userId}`);
+          const response = await axios.get(`${API_URL}/users/${userId}`);
           setLoggedUser(response.data);
+          (loggedUser.isAdmin  === false) && handleLogout();
         }
       } catch (error) {
         console.log(error);

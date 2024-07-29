@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const registerOwner = async (req, res) => {
-    const { fullname, email, password, contact } = req.body;
+    const { fullname, email, password, contact, isAdmin } = req.body;
   
     try {
       const userExist = await userModel.findOne({ email });
@@ -22,12 +22,12 @@ const registerOwner = async (req, res) => {
   
           const user = await userModel.create({
             fullname,
-            email,
+            email:email.toLowerCase(),
             password: hash,
             contact,
-            isAdmin:true
+            isAdmin
           });
-  
+          user.save();
           // const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
           //   expiresIn: "1h",
           // });
@@ -46,7 +46,7 @@ const logInOwner = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await userModel.findOne({ email });
+    const user = await userModel.findOne({ email:email.toLowerCase() });
 
     if (!user) {
       return res.status(400).send("Admin not found");
