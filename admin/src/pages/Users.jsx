@@ -7,6 +7,8 @@ import {
 } from "@mui/base/TablePagination";
 import Cookies from "js-cookie";
 import AddUserForm from "../components/AddUserForm"; 
+import { MdDelete } from "react-icons/md";
+import toast from "react-hot-toast";
 
 export default function Users() {
   const [users, setUsers] = useState([]);
@@ -15,24 +17,24 @@ export default function Users() {
   const [showForm, setShowForm] = useState(false);
   const API_URL = process.env.REACT_APP_API_URL;
 
-  useEffect(() => {
-    const token = Cookies.get("token");
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get(`${API_URL}/users`, {
-          withCredentials: true,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setUsers(response.data);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
-    };
 
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/users`, {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        },
+      });
+      setUsers(response.data);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
+
+  useEffect(() => {
     fetchUsers();
-  }, [API_URL]);
+  }, []);
 
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
@@ -51,22 +53,27 @@ export default function Users() {
   };
 
   const handleUserAdded = () => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get(`${API_URL}/users`, {
-          withCredentials: true,
-          headers: {
-            Authorization: `Bearer ${Cookies.get("token")}`,
-          },
-        });
-        setUsers(response.data);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
-    };
-
     fetchUsers();
   };
+
+  const handleDeleteUser = async (userId) => {
+    try {
+      await axios.delete(`${API_URL}/users/${userId}`, {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        },
+      });
+      toast.success("User deleted successfully!");
+  
+
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      toast.error("Failed to delete user.");
+    }
+    fetchUsers();
+  };
+  
 
   const grey = {
     50: "#F3F6F9",
@@ -148,6 +155,7 @@ export default function Users() {
               <th>Email</th>
               <th>Contact</th>
               <th>Is Admin</th>
+              <th>Delete User</th>
             </tr>
           </thead>
           <tbody>
@@ -160,6 +168,7 @@ export default function Users() {
                 <td>{user.email}</td>
                 <td>{user.contact}</td>
                 <td>{user.isAdmin ? "Yes" : "No"}</td>
+                <td className="flex justify-center"><button className="border-none py-1 text-lg" onClick={()=>{handleDeleteUser(user._id)}} ><MdDelete/></button></td>
               </tr>
             ))}
             {emptyRows > 0 && (
@@ -172,7 +181,7 @@ export default function Users() {
             <tr>
               <CustomTablePagination
                 rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-                colSpan={4}
+                colSpan={5}
                 count={users.length}
                 rowsPerPage={rowsPerPage}
                 page={page}

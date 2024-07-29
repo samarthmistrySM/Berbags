@@ -76,4 +76,6 @@ const logInOwner = async (req, res) => {
   }
 }
 
+
+
 module.exports={registerOwner,logInOwner}

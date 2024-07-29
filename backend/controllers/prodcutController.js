@@ -47,6 +47,6 @@ const addProduct = async (req, res) => {
       console.error("Error Adding product:", error);
       res.status(500).send("Server error");
     }
-  }
+}
   
 module.exports = {getAllProducts, addProduct}
