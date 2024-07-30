@@ -2,7 +2,7 @@ const productModel = require("../models/productModel");
 const userModel = require("../models/userModel");
 
 const addToCart = async (req, res) => {
-  const { userId, productId, quantity } = req.body;
+  const { userId, productId } = req.body;
 
   try {
     const user = await userModel.findById(userId);
@@ -17,12 +17,12 @@ const addToCart = async (req, res) => {
       res.status(400).send("User not found!");
     }
 
-    const itemExist = user.cart.find((item) => item.product === productId);
+    const itemExist = user.cart.find((item) => item.product.equals(productId));
 
     if (itemExist) {
-      itemExist.quantity += quantity;
+      itemExist.quantity += 1;
     } else {
-      user.cart.push({ product: product._id, quantity });
+      user.cart.push({ product: product._id, quantity: 1 });
     }
     await user.save();
     res.status(200).send("Product added to cart");

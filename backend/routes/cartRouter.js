@@ -6,6 +6,6 @@ const authorizeUser = require("../middlewares/userAuth");
 
 const cartRouter = express.Router();
 
-cartRouter.use("/add", authenticateToken, authorizeUser, addToCart);
+cartRouter.post("/add", authenticateToken, authorizeUser, addToCart);
 
 module.exports = cartRouter;

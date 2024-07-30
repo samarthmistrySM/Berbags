@@ -7,6 +7,7 @@ const authRouter = require("./routes/authRouter")
 const ownerRouter = require("./routes/ownerRouter")
 const userRouter = require('./routes/userRouter')
 const productRouter = require('./routes/productRouter')
+const cartRouter = require('./routes/cartRouter')
 
 const connectDb = require("./config/connectDB")
 
@@ -36,6 +37,7 @@ app.use('/api/auth',authRouter);
 app.use('/api/owner',ownerRouter);
 app.use('/api/users',userRouter);
 app.use('/api/products',productRouter);
+app.use('/api/cart',cartRouter);
 
 
 const startServer = async() =>{

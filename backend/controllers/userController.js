@@ -4,7 +4,7 @@ const getUser = async (req, res) => {
   try {
     const userId = req.params.userId;
 
-    const user = await userModel.findById(userId);
+    const user = await userModel.findById(userId).populate("cart.product");
 
     if (!user) {
       return res.status(404).send({ error: "User not found!" });
