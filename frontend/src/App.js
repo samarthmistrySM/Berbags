@@ -4,9 +4,10 @@ import Login from "./pages/Login";
 import { Toaster } from "react-hot-toast";
 import AuthContext from "./context/AuthContext";
 import Navbar from "./components/Navbar";
+import Shop from './pages/Shop'
 
 function App() {
-  const { isAuthenticated, handleLogout } = useContext(AuthContext);
+  const { isAuthenticated } = useContext(AuthContext);
   return (
     <div className="App">
       <Toaster />
@@ -14,7 +15,7 @@ function App() {
         <Router>
           <Navbar />
           <Routes>
-            <Route path="/" element={<p>this is Shop</p>} />
+            <Route path="/" element={<Shop/>} />
             <Route path="/orders" element={<p>this is orders</p>} />
             <Route path="/cart" element={<p>this is cart</p>} />
             <Route path="/profile" element={<p>this is profile</p>} />

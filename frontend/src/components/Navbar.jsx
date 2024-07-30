@@ -1,11 +1,14 @@
-import React from "react";
+import React,{useContext} from "react";
 import logo from "../assets/logo.svg";
 import { NavLink } from "react-router-dom";
 import { BsCartCheck } from "react-icons/bs";
 import { CiUser, CiShoppingCart,CiShop, CiLogout } from "react-icons/ci";
+import AuthContext from "../context/AuthContext";
 
 
 export default function Navbar() {
+
+  const {handleLogout} = useContext(AuthContext)
   return (
     <div className="w-screen overflow-hidden px-10 flex justify-between items-center py-3">
       <div className="logo flex items-center">
@@ -47,7 +50,7 @@ export default function Navbar() {
               <span className="px-1">My Profile</span>
             </NavLink>
           </li>
-          <li className="px-2 ">
+          <li className="px-2 " onClick={handleLogout}>
               <span className="px-1">logout</span>
           </li>
 
