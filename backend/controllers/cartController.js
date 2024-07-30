@@ -40,7 +40,7 @@ const removeFromCart = async (req, res) => {
     if (!user) {
       return res.status(400).send("User not found!");
     }
-    
+
     const product = await productModel.findById(productId);
     if (!product) {
       return res.status(400).send("Product not found!");
@@ -51,15 +51,23 @@ const removeFromCart = async (req, res) => {
       return res.status(404).send("Product not found in cart!");
     }
 
-    user.cart.splice(itemIndex, 1);
+    const item = user.cart[itemIndex];
+
+    if (item.quantity === 1) {
+      user.cart.splice(itemIndex, 1);
+    } else {
+      item.quantity -= 1;
+    }
 
     await user.save();
-    res.status(200).send("Product removed from cart");
+    res.status(200).send("Product quantity updated or removed from cart");
 
   } catch (error) {
     console.error(error);
     res.status(500).send("Server error");
   }
 };
+
+
 
 module.exports = { addToCart, removeFromCart };
