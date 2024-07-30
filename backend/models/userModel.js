@@ -16,8 +16,16 @@ const userSchema = new mongoose.Schema({
   },
   cart: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Product",
+      product: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product',
+        required: true,
+      },
+      quantity: {
+        type: Number,
+        required: true,
+        min: 1,
+      },
     },
   ],
   contact: {
@@ -31,7 +39,7 @@ const userSchema = new mongoose.Schema({
   orders: [
     {
       type:mongoose.Schema.Types.ObjectId,
-      ref:"Order",
+      ref:"Order"
     }
   ],
   isAdmin:{

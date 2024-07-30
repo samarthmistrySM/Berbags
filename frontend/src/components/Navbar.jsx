@@ -27,19 +27,18 @@ export default function Navbar() {
           </li>
           <li className="px-2 ">
             <NavLink
-              to="/orders"
-              className="flex justify-between items-center w-full"
-            >
-              <span className="px-1">Orders</span>
-            </NavLink>
-          </li>
-
-          <li className="px-2 ">
-            <NavLink
               to="/cart"
               className="flex justify-between items-center w-full"
             >
               <span className="px-1">Cart</span>
+            </NavLink>
+          </li>
+          <li className="px-2 ">
+            <NavLink
+              to="/orders"
+              className="flex justify-between items-center w-full"
+            >
+              <span className="px-1">Orders</span>
             </NavLink>
           </li>
           <li className="px-2 ">
