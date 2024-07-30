@@ -28,6 +28,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "../public/images/profilePlaceholder.jpg",
   },
+  orders: [
+    {
+      type:mongoose.Schema.Types.ObjectId,
+      ref:"Order",
+    }
+  ],
   isAdmin:{
     type:Boolean,
     default:false,

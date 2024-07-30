@@ -1,11 +1,14 @@
-import React, { useRef } from "react";
+import React, { useRef, useContext } from "react";
 import { SiGnuprivacyguard } from "react-icons/si";
 import logo from '../assets/logo.svg';
 import Cookies from "js-cookie";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import AuthContext from "../context/AuthContext";
 
 export default function Login() {
+
+  const {update} = useContext(AuthContext)
   const emailRef = useRef();
   const passwordRef = useRef();
 
@@ -23,6 +26,7 @@ export default function Login() {
       const token = response.data.token;
       Cookies.set("token", token, { expires: 1 });
       toast.success(response.data.message);
+      update()
     } catch (error) {
       console.log(error.response.data);
       Cookies.remove("token");

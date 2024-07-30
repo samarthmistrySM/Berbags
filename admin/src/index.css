@@ -109,6 +109,10 @@ a.active{
   font-style: normal;
 }
 
+* {
+  font-family: "Poppins", sans-serif;
+}
+
 .poppins-thin-italic {
   font-family: "Poppins", sans-serif;
   font-weight: 100;
