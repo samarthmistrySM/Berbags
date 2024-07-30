@@ -1,6 +1,8 @@
 import React, { useContext } from "react";
 import AuthContext from "../context/AuthContext";
 import { toast } from "react-hot-toast";
+import axios from 'axios'
+import Cookies from "js-cookie";
 
 const getRandomLightColor = () => {
   const colors = [
@@ -14,11 +16,24 @@ const getRandomLightColor = () => {
 };
 
 const Cart = () => {
-  const { loggedUser } = useContext(AuthContext);
+  const { loggedUser,update } = useContext(AuthContext);
+  const API_URL = process.env.REACT_APP_API_URL;
   const cart = loggedUser?.cart || [];
 
-  const handleRemoveFromCart = (productId) => {
-    toast.success("Product removed from cart!");
+  const handleRemoveFromCart = async(productId) => {
+    try {
+      await axios.post(`${API_URL}/cart/remove`,{userId:loggedUser._id,productId}, {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        },
+      })
+      update()
+      toast.success("Product removed from cart!");
+    } catch (error) {
+      console.error(error);
+      toast.error('An error occurred while removing the product to the cart.');      
+    }
   };
 
   const getTotalPrice = () => {
