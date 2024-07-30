@@ -32,4 +32,34 @@ const addToCart = async (req, res) => {
   }
 };
 
-module.exports = { addToCart };
+const removeFromCart = async (req, res) => {
+  const { userId, productId } = req.body;
+
+  try {
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.status(400).send("User not found!");
+    }
+    
+    const product = await productModel.findById(productId);
+    if (!product) {
+      return res.status(400).send("Product not found!");
+    }
+
+    const itemIndex = user.cart.findIndex((item) => item.product.equals(productId));
+    if (itemIndex === -1) {
+      return res.status(404).send("Product not found in cart!");
+    }
+
+    user.cart.splice(itemIndex, 1);
+
+    await user.save();
+    res.status(200).send("Product removed from cart");
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server error");
+  }
+};
+
+module.exports = { addToCart, removeFromCart };
