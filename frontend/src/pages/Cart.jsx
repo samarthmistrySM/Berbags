@@ -1,8 +1,9 @@
 import React, { useContext } from "react";
 import AuthContext from "../context/AuthContext";
 import { toast } from "react-hot-toast";
-import axios from 'axios'
+import axios from 'axios';
 import Cookies from "js-cookie";
+import { Link } from "react-router-dom";
 
 const getRandomLightColor = () => {
   const colors = [
@@ -16,23 +17,23 @@ const getRandomLightColor = () => {
 };
 
 const Cart = () => {
-  const { loggedUser,update } = useContext(AuthContext);
+  const { loggedUser, update } = useContext(AuthContext);
   const API_URL = process.env.REACT_APP_API_URL;
   const cart = loggedUser?.cart || [];
 
-  const handleRemoveFromCart = async(productId) => {
+  const handleRemoveFromCart = async (productId) => {
     try {
-      await axios.post(`${API_URL}/cart/remove`,{userId:loggedUser._id,productId}, {
+      await axios.post(`${API_URL}/cart/remove`, { userId: loggedUser._id, productId }, {
         withCredentials: true,
         headers: {
           Authorization: `Bearer ${Cookies.get("token")}`,
         },
-      })
-      update()
+      });
+      update();
       toast.success("Product removed from cart!");
     } catch (error) {
       console.error(error);
-      toast.error('An error occurred while removing the product to the cart.');      
+      toast.error('An error occurred while removing the product to the cart.');
     }
   };
 
@@ -46,16 +47,17 @@ const Cart = () => {
   };
 
   return (
-    <div className="p-8 bg-gray-100 min-h-screen">
+    <div className="min-h-screen p-8 bg-gray-100">
       <h1 className="text-3xl font-bold text-gray-900 mb-6">Shopping Cart</h1>
-      <div className="grid grid-cols-1 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {cart.map((item) => (
           <div
             key={item.product._id}
-            className="flex bg-white shadow-lg rounded-lg p-4"
+            className="flex flex-col bg-white shadow-lg rounded-lg p-4"
           >
+            <Link to={`/product/${item.product._id}`}>
             <div
-              className={`h-48 w-48 ${getRandomLightColor()} flex items-center justify-center rounded-lg`}
+              className={`h-48 w-full ${getRandomLightColor()} flex items-center justify-center rounded-lg mb-4`}
             >
               <img
                 src={item.product.image}
@@ -63,12 +65,12 @@ const Cart = () => {
                 className="object-contain h-36 w-full p-2"
               />
             </div>
-            <div className="ml-4 flex flex-col justify-between flex-1">
+            <div className="flex-1 flex flex-col justify-between">
               <div>
-                <h2 className="text-xl font-bold text-gray-900">
+                <h2 className="text-xl font-bold text-gray-900 mb-2">
                   {item.product.name}
                 </h2>
-                <div className="text-gray-700 text-base">
+                <div className="text-gray-700 text-base mb-2">
                   {item.product.discount > 0 ? (
                     <>
                       <span className="line-through mr-2">
@@ -82,26 +84,31 @@ const Cart = () => {
                     <span>₹{item.product.price.toFixed(2)}</span>
                   )}
                 </div>
-                <div className="text-gray-600 text-sm">
+                <div className="text-gray-600 text-sm mb-2">
                   Category: {item.product.category}
                 </div>
-                <div className="text-gray-600 text-sm">
+                <div className="text-gray-600 text-sm mb-2">
                   Quantity: {item.quantity}
                 </div>
               </div>
+            </div>
+            </Link>
               <button
                 onClick={() => handleRemoveFromCart(item.product._id)}
                 className="mt-4 bg-red-400 hover:bg-red-500 text-white font-bold py-2 px-4 rounded"
               >
                 Remove
               </button>
-            </div>
           </div>
         ))}
       </div>
-      <div className="mt-6">
-        <h2 className="text-2xl font-bold text-gray-900">
-          Total: ₹{getTotalPrice()}
+      <div className="mt-6 text-right">
+        <h2 className="text-xl font-bold text-gray-900">
+          {cart.length === 0 ? (
+            <span>Cart is empty! Add items</span>
+          ) : (
+            <span>Total: ₹{getTotalPrice()}</span>
+          )}
         </h2>
       </div>
     </div>

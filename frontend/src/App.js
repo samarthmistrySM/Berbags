@@ -6,6 +6,7 @@ import AuthContext from "./context/AuthContext";
 import Navbar from "./components/Navbar";
 import Shop from './pages/Shop'
 import Cart from "./pages/Cart";
+import Product from "./pages/Product";
 
 function App() {
   const { isAuthenticated } = useContext(AuthContext);
@@ -19,6 +20,7 @@ function App() {
             <Route path="/" element={<Shop/>} />
             <Route path="/orders" element={<p>this is orders</p>} />
             <Route path="/cart" element={<Cart/>} />
+            <Route path="/product/:productId" element={<Product/>} />
             <Route path="/profile" element={<p>this is profile</p>} />
           </Routes>
         </Router>

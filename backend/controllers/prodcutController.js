@@ -15,6 +15,22 @@ const getAllProducts = async (req, res) => {
   }
 };
 
+const getProduct = async (req, res) => {
+  const productId = req.params.productId;
+
+  try {
+    const product = await productModel.findById(productId);
+
+    if(!product) {
+      res.status(400).send("Product not found!")
+    }
+    res.send(product);
+  } catch (error) {
+    console.error("Error geting product:", error);
+    res.status(500).send("Server error");
+  }
+}
+
 const addProduct = async (req, res) => {
   const { name, image, price, category, discount, isSoldOut } = req.body;
   try {
@@ -78,4 +94,4 @@ const updateProduct = async (req, res) => {
   }
 };
 
-module.exports = { getAllProducts, addProduct, updateProduct };
+module.exports = { getAllProducts, addProduct, updateProduct, getProduct };
