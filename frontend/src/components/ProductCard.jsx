@@ -6,8 +6,9 @@ const getRandomLightColor = () => {
 };
 
 const ProductCard = ({ product }) => {
-  const { name, image, price, category, discount, isSoldOut } = product;
+  const { name, image, price, category, discount, isSoldOut, cart } = product;
 
+  const quantity = cart && cart.length > 0 ? cart[0].quantity : 0;
 
   return (
     <div className="max-w-xs rounded overflow-hidden shadow-lg m-4 bg-white">
@@ -19,13 +20,14 @@ const ProductCard = ({ product }) => {
         <div className="text-gray-700 text-base">
           {discount ? (
             <>
-              <span className="line-through mr-2"> ₹{price.toFixed(2)}</span>
-              <span className="text-green-600"> ₹{discount}</span>
+              <span className="line-through mr-2">₹{price.toFixed(2)}</span>
+              <span className="text-green-600">₹{discount}</span>
             </>
           ) : (
-            <span> ₹{price.toFixed(2)}</span>
+            <span>₹{price.toFixed(2)}</span>
           )}
         </div>
+        <div className="text-gray-600 text-sm">Quantity: {quantity}</div>
       </div>
       <div className="px-6 py-4 bg-gray-200 flex items-center justify-between">
         <span className="text-gray-700">{category}</span>
