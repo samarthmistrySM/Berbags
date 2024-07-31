@@ -9,7 +9,7 @@ const orderRouter = express.Router();
 
 orderRouter.get('/',authenticateToken,authorizeOwner)
 
-orderRouter.get('/:userId', getUserOrders)
+orderRouter.get('/getorder/:userId', getUserOrders)
 
 orderRouter.get('/getkey',getKey)
 

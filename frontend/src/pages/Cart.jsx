@@ -66,73 +66,69 @@ const Cart = () => {
     setModalIsOpen(true);
   };
 
-
-
-
   const handleAddressSubmit = async () => {
     try {
-        const { data: key } = await axios.get(`${API_URL}/order/getkey`);
+      const { data: key } = await axios.get(`${API_URL}/order/getkey`);
 
-        const { data: { order } } = await axios.post(`${API_URL}/order/checkout`, {
-            amount: getTotalWithTaxes(),
-        });
+      const {
+        data: { order },
+      } = await axios.post(`${API_URL}/order/checkout`, {
+        amount: getTotalWithTaxes(),
+      });
 
-        const callbackUrl = new URL(`${API_URL}/order/paymentverification`);
-        callbackUrl.searchParams.set('redirect', '/cart');  
+      const callbackUrl = new URL(`${API_URL}/order/paymentverification`);
+      callbackUrl.searchParams.set("redirect", "/cart");
 
+      const options = {
+        key,
+        amount: order.amount,
+        currency: "INR",
+        name: loggedUser.fullname,
+        description: "see you again",
+        image: loggedUser.image,
+        order_id: order.id,
+        callback_url: callbackUrl.toString(),
+        prefill: {
+          name: loggedUser.fullname,
+          email: loggedUser.email,
+          contact: "9408618999",
+        },
+        theme: {
+          color: "#121212",
+        },
+        handler: async function (response) {
+          try {
+            await axios.post(`${API_URL}/order/createorder`, {
+              userId: loggedUser._id,
+              address: address,
+              cart: cart,
+              amount: getTotalWithTaxes(),
+            });
 
-        const options = {
-            key,
-            amount: order.amount,
-            currency: "INR",
-            name: loggedUser.fullname,
-            description: "see you again",
-            image: loggedUser.image,
-            order_id: order.id,
-            callback_url: callbackUrl.toString(),  
-            prefill: {
-                name: loggedUser.fullname,
-                email: loggedUser.email,
-                contact: "9408618999",
-            },
-            theme: {
-                color: "#121212",
-            },
-            handler: async function (response) {
-                try {
-                    await axios.post(`${API_URL}/order/createorder`, {
-                      userId:loggedUser._id,
-                      address:address,
-                      cart:cart,
-                      amount:getTotalWithTaxes()
-                    });
+            toast.success("Payment successful!");
+            update();
+          } catch (error) {
+            console.error(error);
+            toast.error("Failed to confirm payment.");
+          } finally {
+            setModalIsOpen(false);
+          }
+        },
+        modal: {
+          ondismiss: function () {
+            toast.error("Payment window closed.");
+            setModalIsOpen(false);
+          },
+        },
+      };
 
-                    toast.success("Payment successful!");
-                    update();
-                } catch (error) {
-                    console.error(error);
-                    toast.error("Failed to confirm payment.");
-                } finally {
-                    setModalIsOpen(false);
-                }
-            },
-            modal: {
-                ondismiss: function () {
-                    toast.error("Payment window closed.");
-                    setModalIsOpen(false);
-                }
-            }
-        };
-
-        const razor = new window.Razorpay(options);
-        razor.open();
+      const razor = new window.Razorpay(options);
+      razor.open();
     } catch (error) {
-        console.error(error);
-        toast.error("An error occurred during checkout.");
+      console.error(error);
+      toast.error("An error occurred during checkout.");
     }
-};
-
-
+  };
 
   document.title = "Berbags | Cart";
 
@@ -227,6 +223,7 @@ const Cart = () => {
           <button
             onClick={handleProceedToCheckout}
             className="mt-4 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full"
+            disabled={cart.length === 0}
           >
             Proceed to Checkout
           </button>

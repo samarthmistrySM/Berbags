@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar";
 import Shop from './pages/Shop'
 import Cart from "./pages/Cart";
 import Product from "./pages/Product";
+import Orders from "./pages/Orders";
 
 function App() {
   const { isAuthenticated } = useContext(AuthContext);
@@ -19,11 +20,10 @@ function App() {
           <Routes>
             <Route path="/" element={<Shop/>} />
             <Route path="/cart" element={<Cart/>} />
-            <Route path="/orders" element={<p>this is orders</p>} />
+            <Route path="/orders" element={<Orders/>} />
             <Route path="/product/:productId" element={<Product/>} />
             <Route path="/profile" element={<p>this is profile</p>} />
             <Route path="*" element={<Shop/>} />
-
           </Routes>
         </Router>
       ) : (

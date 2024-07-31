@@ -47,7 +47,6 @@ const logInUser = async (req, res) => {
 
   try {
     const user = await userModel.findOne({ email:email.toLowerCase() });
-
     if (!user) {
       return res.status(400).send("User not found, Please register first");
     }
