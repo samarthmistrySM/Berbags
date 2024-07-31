@@ -6,7 +6,7 @@ export default function Shop() {
     const API_URL = process.env.REACT_APP_API_URL;
 
     const [products,setProducts] = useState([]);
-
+    document.title = "Berbags | Shop"
     useEffect(()=>{
         const fetchBags = async() =>{
             try {

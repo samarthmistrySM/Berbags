@@ -10,6 +10,7 @@ import UpdateUserForm from "../components/updateUser";
 import AddUserForm from "../components/AddUserForm"
 import { MdDelete, MdEdit } from "react-icons/md";
 import toast from "react-hot-toast";
+// eslint-disable-next-line 
 
 export default function Users() {
   const [users, setUsers] = useState([]);
@@ -19,6 +20,7 @@ export default function Users() {
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const API_URL = process.env.REACT_APP_API_URL;
+  document.title = "Admin | Manage Users"
 
   const fetchUsers = async () => {
     try {
@@ -36,6 +38,7 @@ export default function Users() {
 
   useEffect(() => {
     fetchUsers();
+    // eslint-disable-next-line 
   }, []);
 
   const emptyRows =

@@ -1,8 +1,7 @@
 import React,{useContext} from "react";
 import logo from "../assets/logo.svg";
 import { NavLink } from "react-router-dom";
-import { BsCartCheck } from "react-icons/bs";
-import { CiUser, CiShoppingCart,CiShop, CiLogout } from "react-icons/ci";
+
 import AuthContext from "../context/AuthContext";
 
 

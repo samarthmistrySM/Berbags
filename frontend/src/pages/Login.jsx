@@ -11,7 +11,7 @@ export default function Login() {
   const {update} = useContext(AuthContext)
   const emailRef = useRef();
   const passwordRef = useRef();
-
+  document.title = "Berbags | Login"
   const handleSubmit = async(e) => {
     e.preventDefault();
     const API_URL = process.env.REACT_APP_API_URL;

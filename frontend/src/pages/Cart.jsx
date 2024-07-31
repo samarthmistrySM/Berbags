@@ -36,7 +36,7 @@ const Cart = () => {
       toast.error('An error occurred while removing the product to the cart.');
     }
   };
-
+  document.title = "Berbags | Cart"
   const getTotalPrice = () => {
     return cart.reduce((total, item) => {
       const price = item.product.price || 0;

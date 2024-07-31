@@ -9,6 +9,7 @@ export default function Login() {
   const API_URL = process.env.REACT_APP_API_URL;
   const emailRef = useRef();
   const passwordRef = useRef();
+  document.title = "Admin | Login"
 
   const handleSubmit = async (e) => {
     e.preventDefault();

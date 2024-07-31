@@ -23,8 +23,8 @@ const pieData = [
 ];
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
-
 const Dashboard = () => {
+  document.title = "Admin | Dahboard"
   return (
     <Box className="w-full p-4">
       <Typography variant="h4" gutterBottom className="w-full mb-4">

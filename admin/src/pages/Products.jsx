@@ -9,7 +9,7 @@ import Cookies from "js-cookie";
 import AddProductForm from "../components/AddProductForm"; 
 import UpdateProductForm from "../components/UpdateProductForm";
 import { MdEdit } from "react-icons/md";
-import toast from "react-hot-toast";
+
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -19,6 +19,7 @@ export default function Products() {
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const API_URL = process.env.REACT_APP_API_URL;
+  document.title = "Admin | Manage Products"
 
   useEffect(() => {
     const token = Cookies.get("token");
