@@ -9,10 +9,12 @@ import RelatedProducts from "../components/RelatedProducts";
 
 const Product = () => {
   const { productId } = useParams();
+  const API_URL = process.env.REACT_APP_API_URL;
+
   const [product, setProduct] = useState(null);
   const [allProducts, setAllProducts] = useState([]);
   const [relatedProducts, setRelatedProducts] = useState([]);
-  const API_URL = process.env.REACT_APP_API_URL;
+  
   const { loggedUser, update } = useContext(AuthContext);
 
   document.title = "Berbags | Product"

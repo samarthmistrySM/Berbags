@@ -19,7 +19,7 @@ code {
 @tailwind utilities;
 
 a.active{
-  color: brown;
+  color: rgb(0, 155, 160);
   
 }
 
