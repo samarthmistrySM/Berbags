@@ -1,8 +1,15 @@
 const express = require("express")
-const {getKey,checkOut,verifyPayment, saveOrder} = require('../controllers/orderController');
+const {getKey,checkOut,verifyPayment, saveOrder, getUserOrders} = require('../controllers/orderController');
 
+const authenticateToken = require('../middlewares/auth')
+const authorizeOwner = require('../middlewares/ownerAuth')
+const authorizeUser = require('../middlewares/userAuth')
 
 const orderRouter = express.Router();
+
+orderRouter.get('/',authenticateToken,authorizeOwner)
+
+orderRouter.get('/:userId', getUserOrders)
 
 orderRouter.get('/getkey',getKey)
 

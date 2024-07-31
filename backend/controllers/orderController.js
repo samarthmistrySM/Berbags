@@ -8,6 +8,36 @@ const razorpay = new Razorpay({
     key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
+const getAllOrders = async(req, res) => {
+    try {
+        const orders = await orderModel.find();
+
+        if(!orders){
+            res.status(400).send("Orders not found!")
+        }
+        
+        res.send(orders.slice().reverse());
+    } catch (error) {
+        console.error(error)
+        res.status(500).send("error getting orders");
+    }
+}
+
+const getUserOrders = async(req, res) => {
+    const userId = req.params.userId;
+    try {
+        const user = await userModel.findById(userId).populate('orders');
+
+        if(!user){
+            res.status(400).send("User not found!");
+        }
+        res.send(user.orders);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Server error");
+    }
+}
+
 const getKey = (req, res) => {
     if (!process.env.RAZORPAY_KEY_ID) {
         return res.status(400).send('Key not found');
@@ -81,4 +111,4 @@ const saveOrder = async (req, res) => {
 }
 
 
-module.exports = { getKey, checkOut, verifyPayment, saveOrder };
+module.exports = { getKey, checkOut, verifyPayment, saveOrder, getAllOrders, getUserOrders };
