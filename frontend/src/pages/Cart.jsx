@@ -118,7 +118,7 @@ const Cart = () => {
             },
             modal: {
                 ondismiss: function () {
-                    toast.info("Payment window closed.");
+                    toast.error("Payment window closed.");
                     setModalIsOpen(false);
                 }
             }
