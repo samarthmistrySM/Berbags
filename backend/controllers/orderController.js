@@ -11,8 +11,8 @@ const razorpay = new Razorpay({
 
 const getAllOrders = async (req, res) => {
   try {
-    const orders = await orderModel.find();
-
+    const orders = await orderModel.find().populate('user').populate('products.product');
+    
     if (!orders) {
       res.status(400).send("Orders not found!");
     }
@@ -120,6 +120,28 @@ const saveOrder = async (req, res) => {
   }
 };
 
+const updateOrderStatus = async (req, res) => {
+  const {isDelivered, orderId} = req.body;
+
+  try {
+    const order = await orderModel.findById(orderId);
+
+    if(!order){
+      res.status(400).send('Order not found');
+    }
+
+    await order.updateOne({
+      isDelivered
+    })
+
+    await order.save();
+    res.status(200).send("Order updated successfully!");
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Server error");
+  }
+}
+
 module.exports = {
   getKey,
   checkOut,
@@ -127,4 +149,5 @@ module.exports = {
   saveOrder,
   getAllOrders,
   getUserOrders,
+  updateOrderStatus
 };

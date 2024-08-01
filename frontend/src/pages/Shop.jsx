@@ -1,6 +1,7 @@
 import React,{useEffect,useState} from 'react'
 import axios from 'axios'
 import ProductCard from '../components/ProductCard';
+import Cookies from "js-cookie";
 
 export default function Shop() {
     const API_URL = process.env.REACT_APP_API_URL;
@@ -10,9 +11,13 @@ export default function Shop() {
     useEffect(()=>{
         const fetchBags = async() =>{
             try {
-                const response = await axios.get(`${API_URL}/products`);
+                const response = await axios.get(`${API_URL}/products`, {
+                    withCredentials: true,
+                    headers: {
+                      Authorization: `Bearer ${Cookies.get("token")}`,
+                    },
+                  });
                 setProducts(response.data)
-
             } catch (error) {
                 console.error(error);
             }

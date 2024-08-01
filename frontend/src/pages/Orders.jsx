@@ -3,6 +3,7 @@ import AuthContext from "../context/AuthContext";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import Cookies from "js-cookie";
 
 const getRandomLightColor = () => {
   const colors = [
@@ -29,13 +30,12 @@ const Orders = () => {
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
-          `${API_URL}/order/getorder/${loggedUser._id}`,
-          {
+          `${API_URL}/order/getorder/${loggedUser._id}`, {
+            withCredentials: true,
             headers: {
-              Authorization: `Bearer ${loggedUser.token}`,
+              Authorization: `Bearer ${Cookies.get("token")}`,
             },
-          }
-        );
+          });
         setOrders(response.data);
       } catch (error) {
         console.error(error);

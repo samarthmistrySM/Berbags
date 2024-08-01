@@ -68,12 +68,22 @@ const Cart = () => {
 
   const handleAddressSubmit = async () => {
     try {
-      const { data: key } = await axios.get(`${API_URL}/order/getkey`);
+      const { data: key } = await axios.get(`${API_URL}/order/getkey`, {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        },
+      });
 
       const {
         data: { order },
       } = await axios.post(`${API_URL}/order/checkout`, {
         amount: getTotalWithTaxes(),
+      }, {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        },
       });
 
       const callbackUrl = new URL(`${API_URL}/order/paymentverification`);
@@ -103,6 +113,11 @@ const Cart = () => {
               address: address,
               cart: cart,
               amount: getTotalWithTaxes(),
+            }, {
+              withCredentials: true,
+              headers: {
+                Authorization: `Bearer ${Cookies.get("token")}`,
+              },
             });
 
             toast.success("Payment successful!");

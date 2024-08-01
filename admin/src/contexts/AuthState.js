@@ -26,6 +26,7 @@ const AuthState = (props) => {
       }
     };
     getUser();
+     // eslint-disable-next-line
   }, [API_URL, reload]);
 
   const update = () => {

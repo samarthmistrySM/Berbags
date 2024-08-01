@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema({
   },
   profile: {
     type: String,
-    default: "../public/images/profilePlaceholder.jpg",
+    default: "https://res.cloudinary.com/pinorama/image/upload/v1722443917/pppb5m0txhiodzntjfiz.jpg",
   },
   orders: [
     {

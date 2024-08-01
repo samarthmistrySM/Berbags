@@ -11,6 +11,7 @@ import Users from './pages/Users';
 import Products from './pages/Products';
 
 import Sidebar from './components/Sidebar';
+import Orders from './pages/Orders';
 
 function App() {
   const { isAuthenticated } = useContext(AuthContext);
@@ -27,7 +28,7 @@ function App() {
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/users" element={<Users/>} />
                 <Route path="/products" element={<Products/>} />
-                <Route path="/orders" element={<p>This is orders</p>} />
+                <Route path="/orders" element={<Orders/>} />
               </Routes>
             </div>
           </div>
