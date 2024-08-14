@@ -6,7 +6,9 @@ const authorizeOwner = require("../middlewares/ownerAuth");
 
 const ownerRouter = express.Router();
 
-ownerRouter.post("/register", authenticateToken, authorizeOwner, registerOwner);
 ownerRouter.post("/login", logInOwner);
+ownerRouter.post("/register", authenticateToken, authorizeOwner, registerOwner);
 
 module.exports = ownerRouter;
+
+

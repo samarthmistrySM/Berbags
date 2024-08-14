@@ -4,7 +4,16 @@ const getUser = async (req, res) => {
   try {
     const userId = req.params.userId;
 
-    const user = await userModel.findById(userId).populate("cart.product");
+    const user = await userModel.findById(userId)
+      .populate({
+        path: 'orders',
+        populate: {
+          path: 'products.product', 
+          model: 'Product', 
+        }
+      })
+      .populate("cart.product"); 
+
 
     if (!user) {
       return res.status(404).send({ error: "User not found!" });
@@ -53,6 +62,36 @@ const updateUser = async (req, res) => {
   }
 };
 
+const editUser = async (req, res) => {
+  const {userId,fullname,email,contact,profile} = req.body;
+  
+  try {
+
+
+    const user = await userModel.findById(userId);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+
+    user.fullname = fullname || user.fullname;
+    user.email = email || user.email;
+    user.contact = contact || user.contact;
+    if (profile) {
+      user.profile = profile;
+    }
+
+
+    await user.save();
+    res.status(201).send("User Updated!");
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).send({ error: "Server error" });
+  }
+};
+
+
+
 const removeUser = async (req, res) => {
   try {
     const userId = req.params.userId;
@@ -73,4 +112,4 @@ const removeUser = async (req, res) => {
 
 
 
-module.exports = { getUser, getAllUsers, updateUser, removeUser };
+module.exports = { getUser, getAllUsers, updateUser, removeUser, editUser };

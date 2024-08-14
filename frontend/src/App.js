@@ -8,6 +8,7 @@ import Shop from './pages/Shop'
 import Cart from "./pages/Cart";
 import Product from "./pages/Product";
 import Orders from "./pages/Orders";
+import UserProfile from "./pages/UserProfile";
 
 function App() {
   const { isAuthenticated } = useContext(AuthContext);
@@ -22,7 +23,7 @@ function App() {
             <Route path="/cart" element={<Cart/>} />
             <Route path="/orders" element={<Orders/>} />
             <Route path="/product/:productId" element={<Product/>} />
-            <Route path="/profile" element={<p>this is profile</p>} />
+            <Route path="/profile" element={<UserProfile/>} />
             <Route path="*" element={<Shop/>} />
           </Routes>
         </Router>
