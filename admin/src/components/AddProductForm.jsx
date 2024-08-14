@@ -26,11 +26,10 @@ export default function AddProductForm({ onClose, onProductAdded }) {
 
       const formData = new FormData();
       formData.append("file", selectedFile);
-      formData.append("upload_preset", "gbxinum8");
-      formData.append("cloud_name", "pinorama");
+      formData.append("upload_preset", process.env.CLOUDINARY_UPLOAD_PRESET);
+      formData.append("cloud_name", process.env.CLOUDINARY_CLOUD_NAME);
 
-      const response = await axios.post(
-        "https://api.cloudinary.com/v1_1/pinorama/image/upload",
+      const response = await axios.post(process.env.CLOUDINARY_API_URL,
         formData
       );
 
