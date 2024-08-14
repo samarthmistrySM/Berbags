@@ -33,7 +33,7 @@ const registerUser = async (req, res) => {
         });
         res.cookie("token", token);
 
-        res.status(201).send("User registered successfully");
+        res.status(201).json({message:"User registered successfully"});
       });
     });
   } catch (error) {
