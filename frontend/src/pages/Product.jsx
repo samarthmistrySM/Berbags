@@ -7,6 +7,15 @@ import Cookies from "js-cookie";
 import { NavLink } from "react-router-dom";
 import RelatedProducts from "../components/RelatedProducts";
 
+const categoryDescriptions = {
+  "trolley bags": "Explore our range of durable and stylish trolley bags, designed for all your travel needs. Perfect for smooth and convenient travel.",
+  "backpacks": "Discover our collection of comfortable and versatile backpacks. Ideal for everyday use, school, or outdoor adventures.",
+  "women purse": "Find the perfect women's purse to complement your style. From elegant to casual, we have a variety of designs for every occasion.",
+  "laptop bags": "Protect your laptop with our high-quality laptop bags. Stylish and functional, they are designed for professionals and students alike.",
+  "travel bags": "Travel in style with our range of travel bags. Built to last and designed for comfort, these bags are your perfect travel companion.",
+  "wallet": "Keep your essentials organized with our stylish wallets. Crafted with care, they offer a blend of elegance and functionality.",
+};
+
 const Product = () => {
   const { productId } = useParams();
   const API_URL = process.env.REACT_APP_API_URL;
@@ -99,6 +108,8 @@ const Product = () => {
     );
   }
 
+  const categoryDescription = categoryDescriptions[product.category] || "Explore our collection of products.";
+
   return (
     <div className="bg-gray-100 min-h-screen w-full flex items-center justify-center">
       <div className="max-w-screen w-full mx-4 md:mx-auto bg-white shadow-lg rounded-lg p-6 md:p-8">
@@ -139,20 +150,21 @@ const Product = () => {
               <div className="text-gray-600 text-lg mt-2">
                 Category: {product.category}
               </div>
+              <p className="text-gray-800 mt-4">{categoryDescription}</p>
               <p className="text-gray-800 mt-4">{product.description}</p>
               <button
-          onClick={() => {
-            handleAddToCart(product._id);
-          }}
-          className={`${
-            product.isSoldOut
-              ? "bg-red-300 cursor-not-allowed"
-              : "bg-blue-400 hover:bg-blue-500"
-          } text-white font-bold py-2 px-4 rounded`}
-          disabled={product.isSoldOut}
-        >
-          {product.isSoldOut ? "Sold Out" : "Add to Cart"}
-        </button>
+                onClick={() => {
+                  handleAddToCart(product._id);
+                }}
+                className={`${
+                  product.isSoldOut
+                    ? "bg-red-300 cursor-not-allowed"
+                    : "bg-blue-400 hover:bg-blue-500"
+                } text-white font-bold py-2 px-4 rounded`}
+                disabled={product.isSoldOut}
+              >
+                {product.isSoldOut ? "Sold Out" : "Add to Cart"}
+              </button>
             </div>
           </div>
         </div>
@@ -161,8 +173,8 @@ const Product = () => {
             More {product.category}
           </h2>
           <div className="flex overflow-x-auto space-x-4">
-            {relatedProducts.map((p,index) => (
-             <RelatedProducts key={index} product={p} getRandomLightColor={getRandomLightColor} />
+            {relatedProducts.map((p, index) => (
+              <RelatedProducts key={index} product={p} getRandomLightColor={getRandomLightColor} />
             ))}
           </div>
         </div>
