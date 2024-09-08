@@ -1,8 +1,10 @@
 const jwt = require('jsonwebtoken');
 
 function authenticateToken(req, res, next) {
+  const authHeader = req.headers['authorization'];
   const token = req.cookies.token;
-  
+  console.log(authHeader);
+  console.log(":");
   console.log(token);
   if (!token) {
     return res.status(401).send('Please Login first to perform such operation!');
