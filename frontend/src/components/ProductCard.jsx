@@ -23,9 +23,9 @@ const ProductCard = ({ product }) => {
 
   const { name, image, price, category, discount, isSoldOut } = product;
 
-  const handleAddToCart = async (productId) => {
-    try {
-      await axios.post(
+  const handleAddToCart = (productId) => {
+    toast.promise(
+      axios.post(
         `${API_URL}/cart/add`,
         { userId: loggedUser._id, productId },
         {
@@ -34,13 +34,15 @@ const ProductCard = ({ product }) => {
             Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
-      );
+      ),
+      {
+        loading: "Adding product to cart...",
+        success: <b>Product added to cart!</b>,
+        error: <b>Could not add product to cart.</b>,
+      }
+    ).then(() => {
       update();
-      toast.success("Product added to cart!");
-    } catch (error) {
-      console.error(error);
-      toast.error("An error occurred while adding the product to the cart.");
-    }
+    });
   };
 
   return (
@@ -90,4 +92,3 @@ const ProductCard = ({ product }) => {
 };
 
 export default ProductCard;
-

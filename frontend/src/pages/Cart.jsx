@@ -20,13 +20,13 @@ const getRandomLightColor = () => {
 const Cart = () => {
   const { loggedUser, update } = useContext(AuthContext);
   const API_URL = process.env.REACT_APP_API_URL;
-  var cart = loggedUser?.cart || [];
+  const cart = loggedUser?.cart || [];
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [address, setAddress] = useState("");
 
-  const handleRemoveFromCart = async (productId) => {
-    try {
-      await axios.post(
+  const handleRemoveFromCart = (productId) => {
+    toast.promise(
+      axios.post(
         `${API_URL}/cart/remove`,
         { userId: loggedUser._id, productId },
         {
@@ -35,13 +35,13 @@ const Cart = () => {
             Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
-      );
-      update();
-      toast.success("Product removed from cart!");
-    } catch (error) {
-      console.error(error);
-      toast.error("An error occurred while removing the product to the cart.");
-    }
+      ).then(() => update()),
+      {
+        loading: "Removing product from cart...",
+        success: "Product removed from cart!",
+        error: "An error occurred while removing the product from the cart.",
+      }
+    );
   };
 
   const getTotalPrice = () => {
@@ -119,7 +119,6 @@ const Cart = () => {
                 Authorization: `Bearer ${Cookies.get("token")}`,
               },
             });
-
             toast.success("Payment successful!");
             update();
           } catch (error) {
