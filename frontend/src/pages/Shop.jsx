@@ -4,6 +4,7 @@ import ProductCard from "../components/ProductCard";
 import Cookies from "js-cookie";
 import FilterSidebar from "../components/FilterSidebar";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 const productsPerPage = 8;
 
@@ -15,21 +16,27 @@ export default function Shop() {
   const [sortOrder, setSortOrder] = useState('');
 
   document.title = "Berbags | Shop";
-
+  
   useEffect(() => {
     const fetchProducts = async () => {
-      try {
-        const response = await axios.get(`${API_URL}/products`, {
+      toast.promise(
+        axios.get(`${API_URL}/products`, {
           withCredentials: true,
           headers: {
             Authorization: `Bearer ${Cookies.get("token")}`,
           },
-        });
-        setProducts(response.data);
-      } catch (error) {
-        console.error("Failed to fetch products:", error);
-      }
+        }).then(response => {
+          setProducts(response.data);
+          return response.data; // Return data to complete toast.promise successfully
+        }),
+        {
+          loading: "Loading products...",
+          success: "Products loaded successfully!",
+          error: "Failed to fetch products.",
+        }
+      );
     };
+
     fetchProducts();
   }, [API_URL]);
 
