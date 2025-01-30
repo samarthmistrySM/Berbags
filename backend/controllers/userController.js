@@ -90,8 +90,6 @@ const editUser = async (req, res) => {
   }
 };
 
-
-
 const removeUser = async (req, res) => {
   try {
     const userId = req.params.userId;

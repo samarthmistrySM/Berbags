@@ -25,7 +25,7 @@ const AuthState = (props) => {
       }
     };
     getUser();
-  }, [API_URL, reload]);
+  }, [reload]);
 
   const update = () => {
     setReload(!reload);
